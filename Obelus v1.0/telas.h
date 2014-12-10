@@ -19,7 +19,7 @@ void desenha_icone(int pos_x, int pos_y, ALLEGRO_COLOR cor)// Desenha icone de d
    al_draw_filled_circle(pos_x + 15, pos_y - 12, 5, cor);
    al_draw_filled_circle(pos_x + 15, pos_y + 10, 5, cor);
 }
-void desenha_creditos(ALLEGRO_FONT *fonte01, ALLEGRO_FONT *fonte02, ALLEGRO_FONT *fonte03, ALLEGRO_COLOR cor)// desenha tela de créditos
+void desenha_creditos(ALLEGRO_FONT *fonte01, ALLEGRO_FONT *fonte02, ALLEGRO_FONT *fonte03, ALLEGRO_FONT *fonte04, ALLEGRO_COLOR cor)// desenha tela de créditos
 {
    al_draw_filled_rectangle(10, 10, LARG - 10, ALT - 10, al_map_rgba(0, 0, 0, 220));
    al_draw_textf(fonte01, cor, LARG / 2, (ALT / 2) - 300, ALLEGRO_ALIGN_CENTRE,
@@ -43,8 +43,20 @@ void desenha_creditos(ALLEGRO_FONT *fonte01, ALLEGRO_FONT *fonte02, ALLEGRO_FONT
    al_draw_textf(fonte02, cor, LARG / 2, (ALT / 2) + 40, ALLEGRO_ALIGN_CENTRE,
                         "Mario Roberto Suruagy de Castro");
 
-   al_draw_textf(fonte02, cor, LARG / 2, (ALT / 2) + 120, ALLEGRO_ALIGN_CENTRE,
+   al_draw_textf(fonte02, cor, LARG / 2, (ALT / 2) + 80, ALLEGRO_ALIGN_CENTRE,
                         "Design por Junior Magalhães");
+
+   al_draw_textf(fonte02, cor, LARG / 2, (ALT / 2) + 140, ALLEGRO_ALIGN_CENTRE,
+                        "Musicas:");
+   al_draw_textf(fonte04, cor, LARG / 2, (ALT / 2) + 180, ALLEGRO_ALIGN_CENTRE,
+                        "Mine, Windbag, Mine     -     Terminal March     -     The Sole Regret");
+   al_draw_textf(fonte04, cor, LARG / 2, (ALT / 2) + 190, ALLEGRO_ALIGN_CENTRE,
+                        "--------------------------------------------------------------------------------------------------");
+   al_draw_textf(fonte04, cor, LARG / 2, (ALT / 2) + 205, ALLEGRO_ALIGN_CENTRE,
+                        "Darren Korb");
+   al_draw_textf(fonte04, cor, LARG / 2, (ALT / 2) + 220, ALLEGRO_ALIGN_CENTRE,
+                        "Bastion Original Soundtrack, 2011");
+
 }
 void desenha_tutorial(ALLEGRO_BITMAP *imagem, ALLEGRO_FONT *fonte, ALLEGRO_COLOR cor)// desenha tela do tutorial
 {
@@ -75,39 +87,38 @@ void desenha_tutorial(ALLEGRO_BITMAP *imagem, ALLEGRO_FONT *fonte, ALLEGRO_COLOR
 	al_draw_textf(fonte, cor, (LARG / 2) - 20, (ALT / 2) + 140, ALLEGRO_ALIGN_LEFT, "Escape: Pausar Jogo");
 	al_draw_line((LARG / 2) - 20, (ALT / 2) + 160, (LARG / 2) + 205, (ALT / 2) + 160, cor, 2);
 
-  al_draw_filled_rectangle((LARG / 2) - 375, (ALT / 2) + 150, (LARG / 2) - 140, (ALT / 2) + 235, al_map_rgba(0, 0, 0, 220));
-  al_draw_textf(fonte, cor, (LARG / 2) - 370, (ALT / 2) + 150, ALLEGRO_ALIGN_LEFT, "Não deixe os inimigos destruirem");
-  al_draw_textf(fonte, cor, (LARG / 2) - 370, (ALT / 2) + 165, ALLEGRO_ALIGN_LEFT, "suas torres!");
-  al_draw_textf(fonte, cor, (LARG / 2) - 370, (ALT / 2) + 180, ALLEGRO_ALIGN_LEFT, "O jogo termina quando todas as");
-  al_draw_textf(fonte, cor, (LARG / 2) - 370, (ALT / 2) + 195, ALLEGRO_ALIGN_LEFT, "torres forem destruidas ou quando");
-  al_draw_textf(fonte, cor, (LARG / 2) - 370, (ALT / 2) + 210, ALLEGRO_ALIGN_LEFT, "seus tiros acabarem!");
-  al_draw_line((LARG / 2) - 370, (ALT / 2) + 230, (LARG / 2) - 145, (ALT / 2) + 230, cor, 2);
+   al_draw_filled_rectangle((LARG / 2) - 375, (ALT / 2) + 150, (LARG / 2) - 140, (ALT / 2) + 235, al_map_rgba(0, 0, 0, 220));
+   al_draw_textf(fonte, cor, (LARG / 2) - 370, (ALT / 2) + 150, ALLEGRO_ALIGN_LEFT, "Não deixe os inimigos destruirem");
+   al_draw_textf(fonte, cor, (LARG / 2) - 370, (ALT / 2) + 165, ALLEGRO_ALIGN_LEFT, "suas torres!");
+   al_draw_textf(fonte, cor, (LARG / 2) - 370, (ALT / 2) + 180, ALLEGRO_ALIGN_LEFT, "O jogo termina quando todas as");
+   al_draw_textf(fonte, cor, (LARG / 2) - 370, (ALT / 2) + 195, ALLEGRO_ALIGN_LEFT, "torres forem destruidas ou quando");
+   al_draw_textf(fonte, cor, (LARG / 2) - 370, (ALT / 2) + 210, ALLEGRO_ALIGN_LEFT, "seus tiros acabarem!");
+   al_draw_line((LARG / 2) - 370, (ALT / 2) + 230, (LARG / 2) - 145, (ALT / 2) + 230, cor, 2);
 }
-
 void escreveNomeRanking(char *nomeRanking, char digitado, int n)// escreve nome do usuário para ranking
 {
-  if(n < 6){
-    nomeRanking[n] = digitado;
-    nomeRanking[n + 1] = '\0';
-  }
- 
-  if(nomeRanking[0] != '\0' && n == 0)
-    nomeRanking[0] = (char) (nomeRanking[0] - 32); 
-  
+   if (n < 6)
+   {
+      nomeRanking[n] = digitado;
+      nomeRanking[n + 1] = '\0';
+   }
+
+   if (nomeRanking[0] != '\0' && n == 0)
+      nomeRanking[0] = (char) (nomeRanking[0] - 32);   
 }
 void envia_ranking(Canhao jogador, char *nome, int *n)// Envia ranking para banco
 {
-  CURL *url = curl_easy_init();
-  
-  char pontos[200];
-  snprintf(pontos, 200, "http://www.betovieira.url.ph/obelus/inserePontos.php?nome=%s&pontos=%d&streak=%d", nome, jogador.pontos, jogador.corrente_max);
+   CURL *url = curl_easy_init();
 
-  curl_easy_setopt(url, CURLOPT_URL, pontos);
-  curl_easy_perform(url);
+   char pontos[200];
+   snprintf(pontos, 200, "http://www.betovieira.url.ph/obelus/inserePontos.php?nome=%s&pontos=%d&streak=%d", nome, jogador.pontos, jogador.corrente_max);
 
-  free(url);
-  system("google-chrome http://betovieira.url.ph/obelus/");
+   curl_easy_setopt(url, CURLOPT_URL, pontos);
+   curl_easy_perform(url);
 
-  nome[0] = '\0';
-  *n = 0;
+   free(url);
+   system("google-chrome http://betovieira.url.ph/obelus/");
+
+   nome[0] = '\0';
+   *n = 0;
 }

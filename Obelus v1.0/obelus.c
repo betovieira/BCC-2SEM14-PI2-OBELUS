@@ -99,6 +99,12 @@ int main(void)
 	ALLEGRO_SAMPLE *tiro = NULL;
 	ALLEGRO_SAMPLE *explosao = NULL;
 	ALLEGRO_SAMPLE *destruicao = NULL;
+	ALLEGRO_SAMPLE *musica_titulo = NULL;
+	ALLEGRO_SAMPLE *musica_jogo = NULL;
+	ALLEGRO_SAMPLE *musica_fim = NULL;
+	ALLEGRO_SAMPLE_INSTANCE *titulo_instance = NULL;
+	ALLEGRO_SAMPLE_INSTANCE *jogo_instance = NULL;
+	ALLEGRO_SAMPLE_INSTANCE *fim_instance = NULL;
 
 	/*Inicializa ALLEGRO*/
 	if (!al_init())
@@ -263,7 +269,7 @@ int main(void)
 	preto = al_map_rgb(0, 0, 0);
 
 	/*Reserva canais de som*/
-	al_reserve_samples(10);
+	al_reserve_samples(5);
 
 	/*Carrega efeitos sonoros*/
 	tiro = al_load_sample("sons/Tiro.wav");
@@ -284,6 +290,36 @@ int main(void)
 		fprintf(stderr, "Falha ao carregar o som 'Explosion2.wav'\n");
 		return EXIT_FAILURE;
 	}
+
+	/*Carrega musicas*/
+	musica_titulo = al_load_sample("musicas/Mine, Windbag, Mine.ogg");
+	if (!musica_titulo)
+	{
+		fprintf(stderr, "Falha ao carregar o som 'Mine, Windbag, Mine.ogg'\n");
+		return EXIT_FAILURE;
+	}
+	musica_jogo = al_load_sample("musicas/Terminal March.ogg");
+	if (!musica_jogo)
+	{
+		fprintf(stderr, "Falha ao carregar o som 'Terminal March.ogg'\n");
+		return EXIT_FAILURE;
+	}
+	musica_fim = al_load_sample("musicas/The Sole Regret.ogg");
+	if (!musica_fim)
+	{
+		fprintf(stderr, "Falha ao carregar o som 'The Sole Regret.ogg'\n");
+		return EXIT_FAILURE;
+	}
+	titulo_instance = al_create_sample_instance(musica_titulo);
+	al_set_sample_instance_playmode(titulo_instance, ALLEGRO_PLAYMODE_LOOP);
+	al_attach_sample_instance_to_mixer(titulo_instance, al_get_default_mixer());
+	jogo_instance = al_create_sample_instance(musica_jogo);
+	al_set_sample_instance_playmode(jogo_instance, ALLEGRO_PLAYMODE_LOOP);
+	al_attach_sample_instance_to_mixer(jogo_instance, al_get_default_mixer());
+	fim_instance = al_create_sample_instance(musica_fim);
+	al_set_sample_instance_playmode(fim_instance, ALLEGRO_PLAYMODE_LOOP);
+	al_attach_sample_instance_to_mixer(fim_instance, al_get_default_mixer());
+
 
 //Ultimas Inicializacões
 //+------------------------------------------------------------------------------------------------------------------------
@@ -307,7 +343,7 @@ int main(void)
 	
 	/*Inicializa o timer*/
 	al_start_timer(timer);
-
+	al_play_sample_instance(titulo_instance);
 //Loop Principal
 //+------------------------------------------------------------------------------------------------------------------------
 	/*Começa o loop principal do jogo*/
@@ -344,6 +380,8 @@ int main(void)
 					tiros[2].municao <= 0 && tiros[3].municao <= 0 && tiros[4].municao <= 0))
 				{
 					estado = tela_final;
+					al_stop_sample_instance(jogo_instance);
+					al_play_sample_instance(fim_instance);
 				}
 			}
 		}
@@ -394,10 +432,26 @@ int main(void)
 					if (!jogo_pausado)
 						tiro_selecionado = T;
 					break;
+				case ALLEGRO_KEY_A:
+					if (!jogo_pausado) 
+					{
+						tiro_selecionado--;
+						if (tiro_selecionado < 0)
+							tiro_selecionado = 0;
+					}
+					break;
+				case ALLEGRO_KEY_S:
+					if (!jogo_pausado) 
+					{
+						tiro_selecionado++;
+						if (tiro_selecionado > 4)
+							tiro_selecionado = 4;
+					}
+					break;
 				case ALLEGRO_KEY_ENTER:
 					if (estado == tela_final)
 					{
-						envia_ranking(jogador, nomeranking, &n);
+						// envia_ranking(jogador, nomeranking, &n);
 						ranking_enviado = true;
 					}
 					break;
@@ -430,6 +484,8 @@ int main(void)
 	                evento.mouse.y >= (ALT / 2) + 18 && evento.mouse.y <= (ALT / 2) + 58) 
 					{
 		            estado = tela_jogo;
+		            al_stop_sample_instance(titulo_instance);
+		            al_play_sample_instance(jogo_instance);
 		            ranking_enviado = false;
 	            }
 	            else if (evento.mouse.x >= (LARG / 2) - 110 && evento.mouse.x <= (LARG / 2) + 110 &&
@@ -465,6 +521,8 @@ int main(void)
                 evento.mouse.y >= (ALT / 2) + 200 && evento.mouse.y <= (ALT / 2) + 242) 
 				{
 	            estado = tela_titulo;
+	            al_stop_sample_instance(fim_instance);
+	            al_play_sample_instance(titulo_instance);
 	            inicia_canhao(&jogador, imagem_canhao);
 					inicia_tiros(tiros, NUM_TIROS);
 					inicia_inimigos(inimigos, NUM_INIMIGOS, imagem_inimigo);
@@ -480,7 +538,7 @@ int main(void)
 				{
 					if (!ranking_enviado)
 					{
-						envia_ranking(jogador, nomeranking, &n);
+						// envia_ranking(jogador, nomeranking, &n);
 						ranking_enviado = true;
 					}
 				}
@@ -493,6 +551,8 @@ int main(void)
                 evento.mouse.y >= (ALT / 2) - 142 && evento.mouse.y <= (ALT / 2) - 102) 
 				{
 	            estado = tela_titulo;
+	            al_stop_sample_instance(jogo_instance);
+	            al_play_sample_instance(titulo_instance);
 	            inicia_canhao(&jogador, imagem_canhao);
 					inicia_tiros(tiros, NUM_TIROS);
 					inicia_inimigos(inimigos, NUM_INIMIGOS, imagem_inimigo);
@@ -579,7 +639,7 @@ int main(void)
 				}
 				else if (creditos)
 				{
-					desenha_creditos(fontetitulosmall, fonte22, fonte32, cinza);
+					desenha_creditos(fontetitulosmall, fonte22, fonte32, fonte14, cinza);
 
 					al_draw_textf(fonte22, cinza, 13, 13, ALLEGRO_ALIGN_LEFT,
 								"Voltar");
@@ -711,6 +771,12 @@ int main(void)
 //Finalização do Programa
 //+------------------------------------------------------------------------------------------------------------------------
 	/*Destroi as variaves ALLEGRO*/
+	al_destroy_sample_instance(fim_instance);
+	al_destroy_sample_instance(jogo_instance);
+	al_destroy_sample_instance(titulo_instance);
+	al_destroy_sample(musica_fim);
+	al_destroy_sample(musica_jogo);
+	al_destroy_sample(musica_titulo);
 	al_destroy_sample(explosao);
 	al_destroy_sample(tiro);
 	al_destroy_sample(destruicao);

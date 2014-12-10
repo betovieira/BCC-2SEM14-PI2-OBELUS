@@ -31,11 +31,11 @@ typedef struct
 
 typedef struct
 {
-    int x;
-    int y;
-    bool ativo;
-    int bound_x;
-    int bound_y;
+   int x;
+   int y;
+   bool ativo;
+   int bound_x;
+   int bound_y;
 
-    ALLEGRO_BITMAP *imagem;
+   ALLEGRO_BITMAP *imagem;
 }Casa;

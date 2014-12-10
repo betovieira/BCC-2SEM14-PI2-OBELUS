@@ -21,7 +21,7 @@ void inicia_tiros(Pelota tiros[], int tamanho)// Inicializa valores dos tiros do
 }
 void cria_tiro(Pelota tiros[], int posicao, Canhao jogador, ALLEGRO_SAMPLE *tiro)// Cria tiro do jogador
 {
-   al_play_sample(tiro, .75, 0, 1, ALLEGRO_PLAYMODE_ONCE, 0);
+   al_play_sample(tiro, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, 0);
 
    tiros[posicao].x = jogador.x;
    tiros[posicao].y = jogador.y + 7;
@@ -65,7 +65,7 @@ void atualiza_tiros(Pelota tiros[], int tamanho)// Atualiza posição do tiro na
          tiros[i].x += tiros[i].velocidade_x;
          tiros[i].y += tiros[i].velocidade_y;
 
-         if(tiros[i].x < 0 || tiros[i].x > LARG || tiros[i].y < 0)// Destroi tiro caso ele escape dos limites da tela
+         if (tiros[i].x < 0 || tiros[i].x > LARG || tiros[i].y < 0)// Destroi tiro caso ele escape dos limites da tela
             tiros[i].ativo = false;
       }
    }
