@@ -1,0 +1,2 @@
+Para instalar o allegro 5 é só dar um ./allegro5.sh e pronto seu alegro está instalado.
+Créditos ao Paulo e ao menino compilador.
